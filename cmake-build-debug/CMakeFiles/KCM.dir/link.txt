@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/KCM.dir/main.cpp.o  -o KCM 

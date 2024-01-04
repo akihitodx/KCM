@@ -123,6 +123,33 @@ KCM/fast:
 	$(MAKE) -f CMakeFiles/KCM.dir/build.make CMakeFiles/KCM.dir/build
 .PHONY : KCM/fast
 
+alg/alg.o: alg/alg.cpp.o
+
+.PHONY : alg/alg.o
+
+# target to build an object file
+alg/alg.cpp.o:
+	$(MAKE) -f CMakeFiles/KCM.dir/build.make CMakeFiles/KCM.dir/alg/alg.cpp.o
+.PHONY : alg/alg.cpp.o
+
+alg/alg.i: alg/alg.cpp.i
+
+.PHONY : alg/alg.i
+
+# target to preprocess a source file
+alg/alg.cpp.i:
+	$(MAKE) -f CMakeFiles/KCM.dir/build.make CMakeFiles/KCM.dir/alg/alg.cpp.i
+.PHONY : alg/alg.cpp.i
+
+alg/alg.s: alg/alg.cpp.s
+
+.PHONY : alg/alg.s
+
+# target to generate assembly for a file
+alg/alg.cpp.s:
+	$(MAKE) -f CMakeFiles/KCM.dir/build.make CMakeFiles/KCM.dir/alg/alg.cpp.s
+.PHONY : alg/alg.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -150,6 +177,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/KCM.dir/build.make CMakeFiles/KCM.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+structure/Graph.o: structure/Graph.cpp.o
+
+.PHONY : structure/Graph.o
+
+# target to build an object file
+structure/Graph.cpp.o:
+	$(MAKE) -f CMakeFiles/KCM.dir/build.make CMakeFiles/KCM.dir/structure/Graph.cpp.o
+.PHONY : structure/Graph.cpp.o
+
+structure/Graph.i: structure/Graph.cpp.i
+
+.PHONY : structure/Graph.i
+
+# target to preprocess a source file
+structure/Graph.cpp.i:
+	$(MAKE) -f CMakeFiles/KCM.dir/build.make CMakeFiles/KCM.dir/structure/Graph.cpp.i
+.PHONY : structure/Graph.cpp.i
+
+structure/Graph.s: structure/Graph.cpp.s
+
+.PHONY : structure/Graph.s
+
+# target to generate assembly for a file
+structure/Graph.cpp.s:
+	$(MAKE) -f CMakeFiles/KCM.dir/build.make CMakeFiles/KCM.dir/structure/Graph.cpp.s
+.PHONY : structure/Graph.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -159,9 +213,15 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... KCM"
+	@echo "... alg/alg.o"
+	@echo "... alg/alg.i"
+	@echo "... alg/alg.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... structure/Graph.o"
+	@echo "... structure/Graph.i"
+	@echo "... structure/Graph.s"
 .PHONY : help
 
 

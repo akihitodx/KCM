@@ -1,1 +1,1 @@
-/usr/bin/c++  -g   CMakeFiles/KCM.dir/main.cpp.o  -o KCM 
+/usr/bin/c++  -g   CMakeFiles/KCM.dir/main.cpp.o CMakeFiles/KCM.dir/alg/alg.cpp.o CMakeFiles/KCM.dir/structure/Graph.cpp.o  -o KCM 

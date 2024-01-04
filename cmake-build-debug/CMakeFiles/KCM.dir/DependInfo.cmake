@@ -4,7 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/mnt/d/Project/KCM/alg/alg.cpp" "/mnt/d/Project/KCM/cmake-build-debug/CMakeFiles/KCM.dir/alg/alg.cpp.o"
   "/mnt/d/Project/KCM/main.cpp" "/mnt/d/Project/KCM/cmake-build-debug/CMakeFiles/KCM.dir/main.cpp.o"
+  "/mnt/d/Project/KCM/structure/Graph.cpp" "/mnt/d/Project/KCM/cmake-build-debug/CMakeFiles/KCM.dir/structure/Graph.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

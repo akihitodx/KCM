@@ -82,7 +82,19 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/mnt/d/Project/KCM/alg/alg.cpp">
+			<Option target="KCM"/>
+		</Unit>
+		<Unit filename="/mnt/d/Project/KCM/alg/alg.h">
+			<Option target="KCM"/>
+		</Unit>
 		<Unit filename="/mnt/d/Project/KCM/main.cpp">
+			<Option target="KCM"/>
+		</Unit>
+		<Unit filename="/mnt/d/Project/KCM/structure/Graph.cpp">
+			<Option target="KCM"/>
+		</Unit>
+		<Unit filename="/mnt/d/Project/KCM/structure/Graph.h">
 			<Option target="KCM"/>
 		</Unit>
 		<Unit filename="/mnt/d/Project/KCM/CMakeLists.txt">

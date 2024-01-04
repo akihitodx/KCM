@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/KCM.dir/alg/alg.cpp.o"
   "CMakeFiles/KCM.dir/main.cpp.o"
+  "CMakeFiles/KCM.dir/structure/Graph.cpp.o"
   "KCM"
   "KCM.pdb"
 )

@@ -7,25 +7,30 @@ using namespace std;
 
 int main() {
 
-//    string query_path = "../test/query";
+
 //    string query_path = "../test/demo1";
 //    string query_path = "../test/demo2";
-    string query_path = "../test/data";
+    string query_path = "../test/query";
+    string data_path = "../test/data";
 
     auto* query = new Graph();
     query->read_graph(query_path);
-    printGraph(*query);
+
+    auto* data = new Graph();
+    data->read_graph(data_path);
 
     unordered_set<int> kernel;
     unordered_map<int,unordered_set<int>> comm;
     set<pair<int,int>> single;
     set<pair<int,int>> special;
     get_info(*query,kernel,comm,single,special);
-    for(auto i : kernel){
-        cout<<i<<" ";
-    }
-    cout<<endl;
 
+    unordered_map<int,unordered_set<int>> kernel_index;
+    unordered_map<int,unordered_map<int,unordered_map<int,unordered_set<int>>>> comm_index;
+
+    pro_nodes(*query,*data,kernel,comm,kernel_index,comm_index);
+
+    map<string,unordered_set<vector<int>>> index;
 
 
 

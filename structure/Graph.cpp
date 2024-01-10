@@ -27,10 +27,13 @@ void Graph::read_graph(const string& path) {
     }
     this->degree.resize(this->count_v,0);
     this->adj.resize(this->count_v);
+    this->nei_label.resize(this->count_v);
     while(!ifs.eof()){
         ifs>>a>>b>>c;
         this->adj[a].insert(b);
         this->adj[b].insert(a);
+        this->nei_label[a].insert(label[b]);
+        this->nei_label[b].insert(label[a]);
         ++count_e;
         ifs>>type;
     }

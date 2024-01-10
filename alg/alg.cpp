@@ -152,11 +152,62 @@ void printGraph(Graph &graph){
     }
 }
 
-//void pro_nodes(Graph &graph,unordered_set<int> &kernel,unordered_map<int,unordered_set<int>> &comm,unordered_map<int,vector<int>> &kernel_index,unordered_map<int,unordered_map<int,unordered_set<int>>> &comm_index){
-//    //prepro kernel nei
-//    unordered_map<int,unordered_set >
-//    for(auto i: kernel){
-//
+bool com_Match(multiset<int> &queryNode,multiset<int> &dataNode){
+    // dataNode 包含 querNode
+    return includes(dataNode.begin(),dataNode.end(),queryNode.begin(),queryNode.end());
+}
+
+void pro_nodes(Graph &query,Graph &data,unordered_set<int> &kernel,unordered_map<int,unordered_set<int>> &comm,unordered_map<int,unordered_set<int>> &kernel_index,unordered_map<int,unordered_map<int,unordered_map<int,unordered_set<int>>>> &comm_index){
+    //prepro kernel
+    unordered_set<int> kernel_set;
+    for(int data_id = 0; data_id< data.count_v; ++data_id){
+        for(auto kernel_id : kernel){
+            if(query.label[kernel_id] == data.label[data_id] && query.degree[kernel_id] <= data.degree[data_id]){
+                if(com_Match(query.nei_label[kernel_id],data.nei_label[data_id])){
+                    kernel_index[kernel_id].insert(data_id);
+                }
+            }
+        }
+    }
+    //prepro comm
+    //存在效率问题 可优化
+    for(int data_id = 0; data_id<data.count_v; ++data_id){
+        // com comm的一项 first连通点 second 可连接的核心节点们
+        for(auto com: comm){
+            if(query.label[com.first] == data.label[data_id] && query.degree[com.first] <= data.degree[data_id]){
+                unordered_map<int,unordered_map<int,unordered_set<int>>> temp;
+                bool flag = true;
+                for(auto n_com: com.second){
+
+                    //n_com 每一个可连接的核心节点
+                    for(auto nei: data.adj[data_id]){
+                        //数据图节点的每一个邻居
+                        if(kernel_index[n_com].count(nei)>0){
+                            temp[data_id][n_com].insert(nei);
+                        }
+                    }
+                    if(temp[data_id][n_com].empty()){
+                        flag = false;
+                        break;
+                    }
+                }
+                if(flag){
+                    comm_index[com.first][temp.begin()->first] = temp.begin()->second;
+                }
+            }
+        }
+    }
+
+}
+
+
+//void init_index(unordered_map<int,unordered_set<int>> &kernel_index,unordered_map<int,unordered_map<int,unordered_map<int,unordered_set<int>>>> &comm_index,unordered_map<int,unordered_set<int>> &comm){
+//    unordered_set<string> mini_piles;
+//    for(auto com: comm){
+//        for(auto a = com.second.begin(); a != com.second.end(); ++a){
+//            for(auto b = next(a); b!= com.second.end(); ++b){
+//                mini_piles.insert("")
+//            }
+//        }
 //    }
-//
 //}

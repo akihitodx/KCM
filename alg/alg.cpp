@@ -6,9 +6,6 @@
 #include "../structure/Graph.h"
 #include <iostream>
 #include <queue>
-#include <set>
-#include <map>
-#include <unordered_set>
 #include <algorithm>
 
 using namespace std;
@@ -23,7 +20,7 @@ struct cmps {
     }
 };
 
-void get_info(Graph &graph,unordered_set<int> &kernel,map<int,unordered_set<int>> &comm, set<pair<int,int>> &single){
+void get_info(Graph &graph,unordered_set<int> &kernel,unordered_map<int,unordered_set<int>> &comm, set<pair<int,int>> &single, set<pair<int,int>> &special){
     map<int,int> mm;
     vector<int> temp_comm;
     for(int i = 0;i<graph.count_v;++i){
@@ -88,8 +85,19 @@ void get_info(Graph &graph,unordered_set<int> &kernel,map<int,unordered_set<int>
     for(auto i: kernel){
         for(auto nei: graph.adj[i]){
             if(kernel.count(nei)>0){
-                if(single.count({nei,i})==0){
-                    single.insert(pair<int,int>(i,nei));
+                bool flag = false;
+                for(auto c: comm){
+                    if(c.second.count(i)<=0 || c.second.count(nei)<=0) continue;
+                    flag = true;
+                    if(single.count({nei,i})==0){
+                        single.insert(pair<int,int>(i,nei));
+                    }
+                    break;
+                }
+                if(!flag){
+                    if(special.count({nei,i})==0){
+                        special.insert(pair<int,int>(i,nei));
+                    }
                 }
 
             }
@@ -102,6 +110,17 @@ void get_info(Graph &graph,unordered_set<int> &kernel,map<int,unordered_set<int>
                 if(single.count({nei,i.first})==0){
                     single.insert(pair<int,int>(i.first,nei));
                 }
+
+            }
+        }
+    }
+    ///for single
+    set<pair<int,int>> temp_s;
+    for(auto i: single){
+        if(kernel.count(i.first)>0 && kernel.count(i.second)>0){
+            for(auto c: comm){
+                if(c.second.count(i.first)<=0 || c.second.count(i.second)<=0) continue;
+
 
             }
         }
@@ -132,3 +151,12 @@ void printGraph(Graph &graph){
         cout<<endl;
     }
 }
+
+//void pro_nodes(Graph &graph,unordered_set<int> &kernel,unordered_map<int,unordered_set<int>> &comm,unordered_map<int,vector<int>> &kernel_index,unordered_map<int,unordered_map<int,unordered_set<int>>> &comm_index){
+//    //prepro kernel nei
+//    unordered_map<int,unordered_set >
+//    for(auto i: kernel){
+//
+//    }
+//
+//}

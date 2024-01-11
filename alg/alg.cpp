@@ -200,14 +200,33 @@ void pro_nodes(Graph &query,Graph &data,unordered_set<int> &kernel,unordered_map
 
 }
 
-
-//void init_index(unordered_map<int,unordered_set<int>> &kernel_index,unordered_map<int,unordered_map<int,unordered_map<int,unordered_set<int>>>> &comm_index,unordered_map<int,unordered_set<int>> &comm){
-//    unordered_set<string> mini_piles;
-//    for(auto com: comm){
-//        for(auto a = com.second.begin(); a != com.second.end(); ++a){
-//            for(auto b = next(a); b!= com.second.end(); ++b){
-//                mini_piles.insert("")
-//            }
-//        }
-//    }
-//}
+//这效率要死了
+void init_index(int query_graph_length,unordered_map<int,unordered_map<int,unordered_map<int,unordered_set<int>>>> &comm_index,unordered_map<unsigned_key ,set<vector<int>>> &index){
+    //    unordered_set<string> mini_piles;
+    //    for(auto com: comm){
+    //        for(auto a = com.second.begin(); a != com.second.end(); ++a){
+    //            for(auto b = next(a); b!= com.second.end(); ++b){
+    //                mini_piles.insert("")
+    //            }
+    //        }
+    //    }
+    for(const auto& query_com: comm_index){
+        for(auto data_com = query_com.second.begin(); data_com!=query_com.second.end(); ++data_com){
+            for(auto a_pair = data_com->second.begin(); a_pair != data_com->second.end(); ++a_pair){
+                auto temp_it = a_pair;
+                for(auto b_pair = ++temp_it; b_pair != data_com->second.end(); ++b_pair){
+                    for(auto i: a_pair->second){
+                        for(auto j: b_pair->second){
+                            unsigned_key key =  (1<<query_com.first) | (1<<a_pair->first) | (1<<b_pair->first);
+                            vector<int> table(query_graph_length,-1);
+                            table[a_pair->first] = i;
+                            table[b_pair->first] = j;
+                            table[query_com.first] = data_com->first;
+                            index[key].insert(table);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

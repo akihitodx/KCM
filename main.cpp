@@ -6,8 +6,6 @@
 using namespace std;
 
 int main() {
-
-
 //    string query_path = "../test/demo1";
 //    string query_path = "../test/demo2";
     string query_path = "../test/query";
@@ -30,7 +28,8 @@ int main() {
 
     pro_nodes(*query,*data,kernel,comm,kernel_index,comm_index);
 
-    map<string,unordered_set<vector<int>>> index;
+    unordered_map<unsigned_key, set<vector<int>>> index;
+    init_index(query->count_v,comm_index,index);
 
 
 

@@ -7,6 +7,7 @@
 #include <iostream>
 #include <queue>
 #include <algorithm>
+#include <bitset>
 
 using namespace std;
 void init_query(Graph &graph){
@@ -202,14 +203,6 @@ void pro_nodes(Graph &query,Graph &data,unordered_set<int> &kernel,unordered_map
 
 //这效率要死了
 void init_index(int query_graph_length,unordered_map<int,unordered_map<int,unordered_map<int,unordered_set<int>>>> &comm_index,unordered_map<unsigned_key ,set<vector<int>>> &index){
-    //    unordered_set<string> mini_piles;
-    //    for(auto com: comm){
-    //        for(auto a = com.second.begin(); a != com.second.end(); ++a){
-    //            for(auto b = next(a); b!= com.second.end(); ++b){
-    //                mini_piles.insert("")
-    //            }
-    //        }
-    //    }
     for(const auto& query_com: comm_index){
         for(auto data_com = query_com.second.begin(); data_com!=query_com.second.end(); ++data_com){
             for(auto a_pair = data_com->second.begin(); a_pair != data_com->second.end(); ++a_pair){
@@ -228,5 +221,55 @@ void init_index(int query_graph_length,unordered_map<int,unordered_map<int,unord
                 }
             }
         }
+    }
+}
+
+struct CompareByBitCount {
+    bool operator()(unsigned_key a,unsigned_key b) const {
+        // 计算a和b中的1的位数
+        int countA = std::bitset<sizeof(unsigned_key) * 8>(a).count();
+        int countB = std::bitset<sizeof(unsigned_key) * 8>(b).count();
+
+        // 比较元素中的1的位数
+        if (countA != countB) {
+            return countA < countB;
+        } else {
+            return a < b;
+        }
+    }
+};
+void init_match_order(unordered_map<unsigned_key, set<vector<int>>> &index,vector<pair<unsigned_key,unsigned_key>> &match_order){
+    set<unsigned_key,CompareByBitCount> keys;
+    for(auto i : index){
+        keys.insert(i.first);
+    }
+    while(keys.size() > 1){
+        unordered_set<unsigned_key> add;
+        unordered_set<unsigned_key> temp;
+        for(auto i : keys){
+            if(temp.empty()){
+                temp.insert(i);
+                continue;
+            }
+            bool flag = false;
+            unsigned_key tt;
+            for(auto t: temp){
+                if(t & i){
+                    add.insert(t | i);
+                    tt = t;
+                    match_order.emplace_back(t,i);
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag){
+                temp.insert(i);
+            }else{
+                temp.erase(tt);
+            }
+        }
+        keys.clear();
+        keys.insert(temp.begin(),temp.end());
+        keys.insert(add.begin(),add.end());
     }
 }

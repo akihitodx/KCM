@@ -31,7 +31,8 @@ int main() {
     unordered_map<unsigned_key, set<vector<int>>> index;
     init_index(query->count_v,comm_index,index);
 
-
+    vector<pair<unsigned_key,unsigned_key>> match_order;
+    init_match_order(index,match_order);
 
 
 

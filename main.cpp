@@ -3,12 +3,14 @@
 #include "structure/Graph.h"
 #include <unordered_set>
 #include <map>
+#include <bitset>
+
 using namespace std;
 
 int main() {
 //    string query_path = "../test/demo1";
 //    string query_path = "../test/demo2";
-    string query_path = "../test/query";
+    string query_path = "../test/data";
     string data_path = "../test/data";
 
     auto* query = new Graph();
@@ -34,6 +36,14 @@ int main() {
     vector<pair<unsigned_key,unsigned_key>> match_order;
     init_match_order(index,match_order);
 
+
+    //test
+    vector<vector<int>> count_1(match_order.size());
+    vector<pair<bitset<13>,bitset<13>>> bits;
+    bits.reserve(match_order.size());
+    for(auto i: match_order){
+        bits.emplace_back(bitset<13 > (i.first),bitset<13 > (i.second));
+    }
 
 
     return 0;

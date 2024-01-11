@@ -8,6 +8,7 @@
 #include <queue>
 #include <algorithm>
 #include <bitset>
+#include <unistd.h>
 
 using namespace std;
 void init_query(Graph &graph){
@@ -272,4 +273,7 @@ void init_match_order(unordered_map<unsigned_key, set<vector<int>>> &index,vecto
         keys.insert(temp.begin(),temp.end());
         keys.insert(add.begin(),add.end());
     }
+    match_order.emplace_back(*keys.begin(),*(keys.begin()++));
+
 }
+

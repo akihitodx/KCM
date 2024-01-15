@@ -8,9 +8,11 @@
 using namespace std;
 
 int main() {
+
 //    string query_path = "../test/demo1";
 //    string query_path = "../test/demo2";
     string query_path = "../test/data";
+//    string query_path = "../test/query";
     string data_path = "../test/data";
 
     auto* query = new Graph();
@@ -23,19 +25,26 @@ int main() {
     unordered_map<int,unordered_set<int>> comm;
     set<pair<int,int>> single;
     set<pair<int,int>> special;
-    get_info(*query,kernel,comm,single,special);
+    unordered_map<int,unordered_set<int>> others;
+    get_info(*query,kernel,comm,single,special,others);
 
     unordered_map<int,unordered_set<int>> kernel_index;
     unordered_map<int,unordered_map<int,unordered_map<int,unordered_set<int>>>> comm_index;
+    unordered_map<int,unordered_map<int,unordered_map<int,unordered_set<int>>>> other_cand;
+    pro_nodes(*query,*data,kernel,comm,kernel_index,comm_index,other_cand,others);
 
-    pro_nodes(*query,*data,kernel,comm,kernel_index,comm_index);
+    unordered_map<int,unordered_map<int,vector<vector<int>>>> others_table;
+
+    get_others_table(other_cand,others_table,(*query).count_v);
+
+
 
     unordered_map<unsigned_key, set<vector<int>>> index;
-    init_index(query->count_v,comm_index,index);
+    init_index(query->count_v,comm_index,index,others_table);
+//    init_index_special(query->count_v,kernel_index,special,index,*data,others_table);
 
     vector<pair<unsigned_key,unsigned_key>> match_order;
     init_match_order(index,match_order);
-
 
     //test
     vector<vector<int>> count_1(match_order.size());
@@ -45,7 +54,8 @@ int main() {
         bits.emplace_back(bitset<13 > (i.first),bitset<13 > (i.second));
     }
 
-
+    part_join(index,match_order);
+    special_check(index,special,*data);
     return 0;
 
 }

@@ -269,48 +269,6 @@ void init_index(int query_graph_length,unordered_map<int,unordered_map<int,unord
                                     }
                                 }
                             }
-
-
-//                            if(others_table.count(i) > 0 && others_table.count(j) == 0){
-//                                //a in others && b not in others
-//                                for(auto tt: others_table[i]){
-//                                    tt[a_pair->first] = i;
-//                                    tt[b_pair->first] = j;
-//                                    tt[query_com.first] = data_com->first;
-//                                    index[key].insert(tt);
-//                                }
-//                            }else if(others_table.count(j) > 0 && others_table.count(i) == 0){
-//                                //b in others && a not in others
-//                                for(auto tt: others_table[j]){
-//                                    tt[a_pair->first] = i;
-//                                    tt[b_pair->first] = j;
-//                                    tt[query_com.first] = data_com->first;
-//                                    index[key].insert(tt);
-//                                }
-//                            }else if(others_table.count(i) == 0 && others_table.count(j) == 0){
-//                                //a & b all not in others
-//                                vector<int> table(query_graph_length,-1);
-//                                table[a_pair->first] = i;
-//                                table[b_pair->first] = j;
-//                                table[query_com.first] = data_com->first;
-//                                index[key].insert(table);
-//                            }else{
-//                                //a & b all in others
-//                                for(auto t_a: others_table[i]){
-//                                    auto temp = t_a;
-//                                    for(auto t_b: others_table[j]){
-//                                        for(int loc = 0; loc<temp.size(); ++loc){
-//                                            if(temp[loc] != -1){
-//                                                t_b[loc] = temp[loc];
-//                                            }
-//                                        }
-//                                        t_b[a_pair->first] = i;
-//                                        t_b[b_pair->first] = j;
-//                                        t_b[query_com.first] = data_com->first;
-//                                        index[key].insert(t_b);
-//                                    }
-//                                }
-//                            }
                         }
                     }
                 }
@@ -319,7 +277,7 @@ void init_index(int query_graph_length,unordered_map<int,unordered_map<int,unord
     }
 }
 //此步存在重复问题 但后续会有功能可以去重
-void init_index_special(int query_graph_length, unordered_map<int,unordered_set<int>> &kernel_index, set<pair<int,int>> special,unordered_map<unsigned_key ,set<vector<int>>> &index, Graph &data,unordered_map<int,vector<vector<int>>> &others_table){
+void init_index_special(int query_graph_length, unordered_map<int,unordered_set<int>> &kernel_index, set<pair<int,int>> special,unordered_map<unsigned_key ,set<vector<int>>> &index, Graph &data,unordered_map<int,unordered_map<int,vector<vector<int>>>> &others_table){
     for(auto spe: special){
         auto spe_a_index = kernel_index[spe.first];
         auto spe_b_index = kernel_index[spe.second];
@@ -328,19 +286,23 @@ void init_index_special(int query_graph_length, unordered_map<int,unordered_set<
         for(auto node: spe_a_index){
             for(auto nei: data.adj[node]){
                 if(spe_b_index.count(nei) > 0){
-                    if(others_table.count(node) > 0 && others_table.count(nei) == 0){
+                    if(others_table.count(spe.first) > 0 && others_table.count(spe.second) == 0){
                         //node in  & nei not in
-                        for(auto table : others_table[node]){
-                            table[spe.first] = node;
-                            table[spe.second] = nei;
-                            index[key].insert(table);
+                        for(auto table : others_table[spe.first]){
+                            if(table.first != node) continue;
+                            for(auto temp: table.second){
+                                temp[spe.second] = nei;
+                                index[key].insert(temp);
+                            }
                         }
-                    }else if(others_table.count(nei) > 0 && others_table.count(node) == 0){
+                    }else if(others_table.count(spe.first) == 0 && others_table.count(spe.second) > 0){
                         //node not in & nei in
-                        for(auto table: others_table[nei]){
-                            table[spe.first] = node;
-                            table[spe.second] = nei;
-                            index[key].insert(table);
+                        for(auto table : others_table[spe.second]){
+                            if(table.first != nei) continue;
+                            for(auto temp: table.second){
+                                temp[spe.first] = node;
+                                index[key].insert(temp);
+                            }
                         }
                     }else if(others_table.count(nei) == 0 && others_table.count(node) == 0){
                         //node not in & nei not in
@@ -350,17 +312,20 @@ void init_index_special(int query_graph_length, unordered_map<int,unordered_set<
                         index[key].insert(temp);
                     }else{
                         // node in and nei in
-                        for(auto a: others_table[node]){
-                            auto temp = a;
-                            for(auto b: others_table[nei]){
-                                for(int loc = 0; loc<temp.size();++loc){
-                                    if(temp[loc] != -1){
-                                        b[loc] = temp[loc];
+                        for(auto aaa: others_table[spe.first]){
+                            if(aaa.first != node) continue;
+                            for(auto a_temp:aaa.second){
+                                for(auto bbb:others_table[spe.second]){
+                                    if(bbb.first != nei) continue;
+                                    for(auto b_temp:bbb.second){
+                                        for(int loc = 0;loc<b_temp.size();++loc){
+                                            if(a_temp[loc] != -1){
+                                                b_temp[loc] = a_temp[loc];
+                                            }
+                                        }
+                                        index[key].insert(b_temp);
                                     }
                                 }
-                                b[spe.first] = node;
-                                b[spe.second] = nei;
-                                index[key].insert(b);
                             }
                         }
                     }

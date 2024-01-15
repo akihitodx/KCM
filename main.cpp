@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <map>
 #include <bitset>
-
+#include <fstream>
 using namespace std;
 
 int main() {
@@ -41,7 +41,7 @@ int main() {
 
     unordered_map<unsigned_key, set<vector<int>>> index;
     init_index(query->count_v,comm_index,index,others_table);
-//    init_index_special(query->count_v,kernel_index,special,index,*data,others_table);
+    init_index_special(query->count_v,kernel_index,special,index,*data,others_table);
 
     vector<pair<unsigned_key,unsigned_key>> match_order;
     init_match_order(index,match_order);
@@ -56,6 +56,21 @@ int main() {
 
     part_join(index,match_order);
     special_check(index,special,*data);
+
+    ofstream out("../output");
+    if(out.is_open()){
+        out<<"match count: "<<index.begin()->second.size()<<endl;
+        for(const auto& vec: index.begin()->second){
+            for(auto i: vec){
+                out<<i<<" ";
+            }
+            out<<endl;
+        }
+        out.close();
+    }else{
+        cerr<<"unable to open the file"<<endl;
+    }
+
     return 0;
 
 }

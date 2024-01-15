@@ -5,6 +5,8 @@
 #include <map>
 #include <bitset>
 #include <fstream>
+#include <chrono>
+
 using namespace std;
 
 int main() {
@@ -20,6 +22,9 @@ int main() {
 
     auto* data = new Graph();
     data->read_graph(data_path);
+
+    // 开始计时
+    auto startTime = std::chrono::high_resolution_clock::now();
 
     unordered_set<int> kernel;
     unordered_map<int,unordered_set<int>> comm;
@@ -55,9 +60,15 @@ int main() {
     part_join(index,match_order);
     special_check(index,special,*data);
 
+    // 结束计时
+    auto endTime = std::chrono::high_resolution_clock::now();
+    // 计算运行时间
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+
     //out
-    ofstream out("../output");
+    ofstream out("../output.txt");
     if(out.is_open()){
+        out<< "程序运行时间：" << duration.count() << " 毫秒" << std::endl;
         out<<"match count: "<<index.begin()->second.size()<<endl;
         for(const auto& vec: index.begin()->second){
             for(auto i: vec){

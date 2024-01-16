@@ -14,7 +14,6 @@ void Graph::read_graph(const string& path) {
         cout <<path <<" open failed"<<endl;
         exit(0);
     }
-    int count_ee = 0;
     vector<int> nei;
     char type;
     int a ,b ,c;

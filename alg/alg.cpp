@@ -28,9 +28,10 @@ void get_info(Graph &graph,unordered_set<int> &kernel,unordered_map<int,unordere
     for(int i = 0;i<graph.count_v;++i){
         mm[i] = graph.degree[i];
     }
+    //maybe gai
     //inti kernel
     while(!mm.empty()){
-       int max_degree_id = 0;
+       int max_degree_id = mm.begin()->first;
        for(auto i : mm){
            if(i.second> mm[max_degree_id]){
                max_degree_id = i.first;
@@ -47,6 +48,7 @@ void get_info(Graph &graph,unordered_set<int> &kernel,unordered_map<int,unordere
            }
        }
     }
+    //maybe gai
     // single check
     if(!mm.empty()){
         for(auto i: mm){
@@ -70,6 +72,7 @@ void get_info(Graph &graph,unordered_set<int> &kernel,unordered_map<int,unordere
             }
         }
     }
+    //buyonggai
     //init comm
     for(auto i: temp_comm){
         vector<int> count;
@@ -82,6 +85,8 @@ void get_info(Graph &graph,unordered_set<int> &kernel,unordered_map<int,unordere
             comm.insert(pair<int,unordered_set<int>>(i,unordered_set<int>(count.begin(),count.end())));
         }
     }
+
+    //不用改
     //twice single check
     ///for kernel
     for(auto i: kernel){
@@ -127,9 +132,18 @@ void get_info(Graph &graph,unordered_set<int> &kernel,unordered_map<int,unordere
             }
         }
     }
+
+
+//可能需要改
     //for others
+    unordered_set<int> single_temp_set;
+    for(auto i: single){
+        single_temp_set.insert(i.first);
+        single_temp_set.insert(i.second);
+    }
     for(int i = 0;i<graph.count_v; ++i){
-        if(kernel.count(i) < 1 && comm.count(i) < 1){
+        if(kernel.count(i) == 0 && comm.count(i) == 0 && single_temp_set.count(i)==0){
+
             others[*(graph.adj[i].begin())].insert(i);
         }
     }

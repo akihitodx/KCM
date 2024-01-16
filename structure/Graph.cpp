@@ -19,7 +19,7 @@ void Graph::read_graph(const string& path) {
     int a ,b ,c;
     ifs>>type;
     while(type=='v'){
-        ifs>>a>>b;
+        ifs>>a>>b>>c;
         label.push_back(b);
         ++count_v;
         ifs>>type;

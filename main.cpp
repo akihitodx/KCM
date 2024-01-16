@@ -13,11 +13,11 @@ int main() {
 
 //    string query_path = "../test/demo1";
 //    string query_path = "../test/demo2";
-    string query_path = "../test/data";
+//    string query_path = "../test/data";
 //    string query_path = "../test/query";
-    string data_path = "../test/data";
-//    string query_path = "../test/y_1.graph";
-//    string data_path ="../test/yeast.graph";
+//    string data_path = "../test/data";
+    string query_path = "../test/y_1.graph";
+    string data_path ="../test/yeast.graph";
 
     auto* query = new Graph();
     query->read_graph(query_path);
@@ -36,7 +36,7 @@ int main() {
     unordered_map<int,unordered_set<int>> others;
     get_info(*query,kernel,comm,single,special,others);
 
-    unordered_set<int> temp;
+//    unordered_set<int> temp;
 //    int t = 0;
 //    for(auto i: data->nei_label){
 //        if(i.count(12)>0 && i.count(36)>0 && (*data).label[t]==13) {
@@ -44,6 +44,7 @@ int main() {
 //        }
 //        ++t;
 //    }
+
     //data
     unordered_map<int,unordered_set<int>> kernel_index;
     unordered_map<int,unordered_map<int,unordered_map<int,unordered_set<int>>>> comm_index;

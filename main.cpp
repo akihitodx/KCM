@@ -10,7 +10,6 @@
 using namespace std;
 
 int main() {
-
 //    string query_path = "../test/demo1";
 //    string query_path = "../test/demo2";
 //    string query_path = "../test/data";

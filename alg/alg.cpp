@@ -557,8 +557,12 @@ void part_join(unordered_map<unsigned_key, set<vector<int>>> &index,vector<pair<
             ++pos;
         }
         //iter
+        int x= 0,y= 0;
         for(auto aa: index_a){
+            ++x;
             for(auto bb: index_b){
+                ++y;
+                cout<<x<<" "<<y<<endl;
                 bool flag = true;
                 for(auto loc: poss){
                     if(aa[loc] != bb[loc]){
@@ -597,14 +601,14 @@ void part_join(unordered_map<unsigned_key, set<vector<int>>> &index,vector<pair<
     }
 }
 
-void special_check(unordered_map<unsigned_key, set<vector<int>>> &index,set<pair<int,int>> &special,Graph &data){
-    auto el = index.begin()->second;
+void single_check(unordered_map<unsigned_key, set<vector<int>>> &index,set<pair<int,int>> &single,Graph &data){
+    auto &el = index.begin()->second;
     for(auto it = el.begin(); it != el.end() ;){
         bool flag = true;
-        for(auto spe: special){
+        for(auto spe: single){
             auto v_a = (*it)[spe.first];
             auto v_b = (*it)[spe.second];
-            if(data.adj[v_a].count(v_b)<1){
+            if(data.adj[v_a].count(v_b) == 0){
                 flag = false;
                 break;
             }

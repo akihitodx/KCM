@@ -27,7 +27,7 @@ void init_match_order(unordered_map<unsigned_key, set<vector<int>>> &index,vecto
 
 void part_join(unordered_map<unsigned_key, set<vector<int>>> &index,vector<pair<unsigned_key,unsigned_key>> &match_order);
 
-void special_check(unordered_map<unsigned_key, set<vector<int>>> &index,set<pair<int,int>> &special,Graph &data);
+void single_check(unordered_map<unsigned_key, set<vector<int>>> &index,set<pair<int,int>> &single,Graph &data);
 
 void get_other_cand(unordered_map<int,unordered_map<int,unordered_map<int,unordered_set<int>>>> &other_cand,Graph &data, Graph &query,unordered_map<int,unordered_set<int>> &kernel_index,unordered_map<int,unordered_set<int>> &others);
 void get_others_table(unordered_map<int,unordered_map<int,unordered_map<int,unordered_set<int>>>> &other_cand,unordered_map<int,unordered_map<int,vector<vector<int>>>> &others_table,int length);

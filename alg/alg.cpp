@@ -603,7 +603,7 @@ struct CompareByBitCount {
         }
     }
 };
-void init_match_order(unordered_map<unsigned_key, set<vector<int>>> &index,vector<pair<unsigned_key,unsigned_key>> &match_order){
+unsigned_key init_match_order(unordered_map<unsigned_key, set<vector<int>>> &index,vector<pair<unsigned_key,unsigned_key>> &match_order){
     set<unsigned_key,CompareByBitCount> keys;
     for(auto i : index){
         keys.insert(i.first);
@@ -621,6 +621,7 @@ void init_match_order(unordered_map<unsigned_key, set<vector<int>>> &index,vecto
             for(auto t: temp){
                 if(t & i){
                     add.insert(t | i);
+                    index[t | i] = { };
                     tt = t;
                     match_order.emplace_back(t,i);
                     flag = true;
@@ -637,6 +638,7 @@ void init_match_order(unordered_map<unsigned_key, set<vector<int>>> &index,vecto
         keys.insert(temp.begin(),temp.end());
         keys.insert(add.begin(),add.end());
     }
+    return *keys.begin();
 //    match_order.emplace_back(*keys.begin(),*(keys.begin()++));
 
 }
@@ -698,8 +700,11 @@ void part_join(unordered_map<unsigned_key, set<vector<int>>> &index,vector<pair<
                 }
             }
         }
-        index.erase(order.first);
-        index.erase(order.second);
+//        index.erase(order.first);
+//        index.erase(order.second);
+        index[order.first].clear();
+        index[order.second].clear();
+        cout<<"====="<<endl;
     }
 }
 

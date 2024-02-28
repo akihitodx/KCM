@@ -1,5 +1,6 @@
 #include <iostream>
 #include "alg/alg.h"
+#include "alg/multi_Thread.h"
 #include "structure/Graph.h"
 #include <unordered_set>
 #include <map>
@@ -88,7 +89,7 @@ int main(int argc, char* argv[]) {
     init_index_special(query->count_v,kernel_index,special,index,*data,others_table);
 
     vector<pair<unsigned_key,unsigned_key>> match_order;
-    init_match_order(index,match_order);
+    unsigned_key res_num = init_match_order(index,match_order);
 
     //test
     vector<bitset<13>> count_1;
@@ -106,7 +107,13 @@ int main(int argc, char* argv[]) {
         count.push_back(i.second.size());
     }
     //join and check
-    part_join(index,match_order);
+
+//    //单线程
+//    part_join(index,match_order);
+
+    //多线程
+    do_thread(index,match_order);
+
 
 //    index.clear();
 //    index[0].insert({342,1138,769,818});
@@ -116,12 +123,12 @@ int main(int argc, char* argv[]) {
     // 结束计时
     auto endTime = std::chrono::high_resolution_clock::now();
     // 计算运行时间
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
 
     //out
     ofstream out("../output.txt");
     if(out.is_open()){
-        out<< "程序运行时间：" << duration.count() << " 毫秒" << std::endl;
+        out<< "程序运行时间：" << duration.count()  << std::endl;
         out<<"match count: "<<index.begin()->second.size()<<endl;
 
         //wirte complete match_table

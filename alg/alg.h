@@ -23,7 +23,7 @@ void pro_nodes(Graph &query,Graph &data,unordered_set<int> &kernel,unordered_map
 void init_index(int query_graph_length,unordered_map<int,unordered_map<int,unordered_map<int,unordered_set<int>>>> &comm_index,unordered_map<unsigned_key ,set<vector<int>>> &index,unordered_map<int,unordered_map<int,vector<vector<int>>>> &others_table);
 void init_index_special(int query_graph_length, unordered_map<int,unordered_set<int>> &kernel_index, set<pair<int,int>> special,unordered_map<unsigned_key ,set<vector<int>>> &index, Graph &data,unordered_map<int,unordered_map<int,vector<vector<int>>>> &others_table);
 
-void init_match_order(unordered_map<unsigned_key, set<vector<int>>> &index,vector<pair<unsigned_key,unsigned_key>> &match_order);
+unsigned_key init_match_order(unordered_map<unsigned_key, set<vector<int>>> &index,vector<pair<unsigned_key,unsigned_key>> &match_order);
 
 void part_join(unordered_map<unsigned_key, set<vector<int>>> &index,vector<pair<unsigned_key,unsigned_key>> &match_order);
 

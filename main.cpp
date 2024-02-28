@@ -10,15 +10,23 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
+    //需要更改Graph.cpp
+    // 使用基础数据集 v输入形式 >>a>>b
+    // 其他数据集 >>a>>b>>c
+
 //    string query_path = "../test/demo1";
 //    string query_path = "../test/demo2";
 //    string query_path = "../test/data";
 //    string query_path = "../test/query";
 //    string data_path = "../test/data";
-//    string query_path = "../test/y_1.graph";
-//    string data_path ="../test/yeast.graph";
-    string query_path = "../test/human/query_graph/query_dense_4_3.graph";
-    string data_path ="../test/human/data_graph/human_temp.graph";
+    string query_path = "../test/y_1.graph";
+    string data_path ="../test/yeast.graph";
+
+//    string query_path = "../test/human/query_graph/query_dense_4_3.graph";
+//    string data_path ="../test/human/data_graph/human_temp.graph";
+
+//        string query_path = "../test/data";
+//        string data_path = "../test/data";
 
 /*
     string query_path;
@@ -83,7 +91,11 @@ int main(int argc, char* argv[]) {
     init_match_order(index,match_order);
 
     //test
-    vector<vector<int>> count_1(match_order.size());
+    vector<bitset<13>> count_1;
+    count_1.reserve(index.size());
+    for(auto i: index){
+        count_1.emplace_back(i.first);
+    }
     vector<pair<bitset<13>,bitset<13>>> bits;
     bits.reserve(match_order.size());
     for(auto i: match_order){
@@ -112,13 +124,13 @@ int main(int argc, char* argv[]) {
         out<< "程序运行时间：" << duration.count() << " 毫秒" << std::endl;
         out<<"match count: "<<index.begin()->second.size()<<endl;
 
-//        //wirte complete match_table
-//        for(const auto& vec: index.begin()->second){
-//            for(auto i: vec){
-//                out<<i<<" ";
-//            }
-//            out<<endl;
-//        }
+        //wirte complete match_table
+        for(const auto& vec: index.begin()->second){
+            for(auto i: vec){
+                out<<i<<" ";
+            }
+            out<<endl;
+        }
 
         out.close();
         cout<<"finished work"<<endl;

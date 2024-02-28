@@ -22,7 +22,109 @@ struct cmps {
     }
 };
 
-void get_info(Graph &graph,unordered_set<int> &kernel,unordered_map<int,unordered_set<int>> &comm, set<pair<int,int>> &single, set<pair<int,int>> &special,unordered_map<int,unordered_set<int>> &others){
+void get_info(Graph &graph,unordered_set<int> &kernel,unordered_map<int,unordered_set<int>> &comm, set<pair<int,int>> &single,set<pair<int,int>> &special, unordered_map<int,unordered_set<int>> &others){
+    map<int,int> mm;
+    vector<int> temp_comm;
+    for(int i = 0;i<graph.count_v;++i){
+        mm[i] = graph.degree[i];
+    }
+    //init kernel
+    while(!mm.empty()){
+        int max_degree_id = mm.begin()->first;
+        for(auto i: mm){
+            if(i.second> mm[max_degree_id]){
+                max_degree_id = i.first;
+            }
+        }
+        if(mm[max_degree_id] == 0) break;
+        mm.erase(max_degree_id);
+        kernel.insert(max_degree_id);
+        for(auto i: graph.adj[max_degree_id]){
+            if(mm.count(i)<=0) continue;
+            if(--mm[i]<=0){
+                mm.erase(i);
+                temp_comm.push_back(i);
+            }
+        }
+    }
+    // init comm
+    for(auto i: temp_comm){
+        vector<int> count;
+        for(auto nei : graph.adj[i]){
+            if(kernel.count(nei)>0){
+                count.push_back(nei);
+            }
+        }
+        if(count.size()>1){
+            comm.insert(pair<int,unordered_set<int>>(i,unordered_set<int>(count.begin(),count.end())));
+        }
+    }
+    //init others
+    for(int i = 0;i<graph.count_v; ++i){
+        if(kernel.count(i) == 0 && comm.count(i) == 0 ){
+            unordered_set<int> count_kernel;
+            unordered_set<int> count_comm;
+            for(auto nei: graph.adj[i]){
+                if (kernel.count(nei)>0){
+                    count_kernel.insert(nei);
+                }
+                if(comm.count(nei)>0){
+                    count_comm.insert(nei);
+                }
+            }
+            if(count_kernel.size() == 1 && count_comm.size()== 0){
+                others[*count_kernel.begin()].insert(i);
+            }else if(count_comm.size()>0){
+                kernel.insert(i);
+                for(auto c: count_comm){
+                    comm[c].insert(i);
+                }
+            }
+        }
+    }
+    //check kernel to comm
+    unordered_map<int,unordered_set<int>> kernel_nei_kernel;
+    int loc = -1;
+    int max_count = 0;
+    for(auto i: kernel){
+        int count  = 0;
+        for(auto nei: graph.adj[i]){
+            if(kernel.count(nei) > 0 ){
+                kernel_nei_kernel[i].insert(nei);
+            }
+        }
+    }
+    while(!kernel_nei_kernel.empty()){
+        int max = kernel_nei_kernel.begin()->first;
+        for(auto i: kernel_nei_kernel){
+            if(i.second.size() > kernel_nei_kernel[max].size()){
+                max = i.first;
+            }
+        }
+
+        if(kernel_nei_kernel[max].size() > 1){
+            //up to comm
+            comm[max] = kernel_nei_kernel[max];
+            for(auto i: kernel_nei_kernel[max]){
+                if(kernel_nei_kernel[i].size()==1){
+                    kernel_nei_kernel.erase(i);
+                }else{
+                    kernel_nei_kernel[i].erase(max);
+                }
+            }
+            kernel_nei_kernel.erase(max);
+        }else{
+            //special
+            special.insert({max,*kernel_nei_kernel[max].begin()});
+            kernel_nei_kernel.erase(*kernel_nei_kernel[max].begin());
+            kernel_nei_kernel.erase(max);
+        }
+    }
+
+}
+
+
+void get_info_old(Graph &graph,unordered_set<int> &kernel,unordered_map<int,unordered_set<int>> &comm, set<pair<int,int>> &single, set<pair<int,int>> &special,unordered_map<int,unordered_set<int>> &others){
     map<int,int> mm;
     vector<int> temp_comm;
 //    unordered_set<int> temp_others;

@@ -8,19 +8,19 @@
 #include <fstream>
 #include <chrono>
 #include <unistd.h>
+#include <cmath>
+
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    //需要更改Graph.cpp
-    // 使用基础数据集 v输入形式 >>a>>b
-    // 其他数据集 >>a>>b>>c
 
 //    string query_path = "../test/demo1";
 //    string query_path = "../test/demo2";
 //    string query_path = "../test/data";
 //    string query_path = "../test/query";
 //    string data_path = "../test/data";
-    string query_path = "../test/y_1.graph";
+//    string query_path = "../test/y_1.graph";
+    string query_path = "../test/y_8.graph";
     string data_path ="../test/yeast.graph";
 
 //    string query_path = "../test/human/query_graph/query_dense_4_3.graph";
@@ -87,9 +87,22 @@ int main(int argc, char* argv[]) {
     unordered_map<unsigned_key, set<vector<int>>> index;
     init_index(query->count_v,comm_index,index,others_table);
     init_index_special(query->count_v,kernel_index,special,index,*data,others_table);
+    auto origin_index = index;
+
+    vector<int> aa;
+    for(auto i: origin_index){
+        aa.push_back(i.second.size());
+    }
 
     vector<pair<unsigned_key,unsigned_key>> match_order;
-    unsigned_key res_num = init_match_order(index,match_order);
+    int res_num = (int)init_match_order(index,match_order);
+
+    auto q = index[21].size();
+
+
+    vector<vector<pair<unsigned_key,unsigned_key>>> match_order_level;
+    match_order_level.resize(ceil(log2(index.size()+1))-1);
+    init_match_order_level(origin_index,match_order_level);
 
     //test
     vector<bitset<13>> count_1;
@@ -111,9 +124,11 @@ int main(int argc, char* argv[]) {
 //    //单线程
 //    part_join(index,match_order);
 
-    //多线程
-    do_thread(index,match_order);
+//    //多线程 创建全部线程
+//    do_thread(index,match_order);
 
+    //多线程 按级别分布创建线程
+    do_thread_level(index,match_order_level);
 
 //    index.clear();
 //    index[0].insert({342,1138,769,818});
@@ -129,10 +144,10 @@ int main(int argc, char* argv[]) {
     ofstream out("../output.txt");
     if(out.is_open()){
         out<< "程序运行时间：" << duration.count()  << std::endl;
-        out<<"match count: "<<index.begin()->second.size()<<endl;
+        out<<"match count: "<<index[res_num].size()<<endl;
 
         //wirte complete match_table
-        for(const auto& vec: index.begin()->second){
+        for(const auto& vec: index[res_num]){
             for(auto i: vec){
                 out<<i<<" ";
             }

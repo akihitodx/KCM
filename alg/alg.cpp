@@ -643,6 +643,34 @@ unsigned_key init_match_order(unordered_map<unsigned_key, set<vector<int>>> &ind
 
 }
 
+void init_match_order_level(unordered_map<unsigned_key, set<vector<int>>> &index, vector<vector<pair<unsigned_key,unsigned_key>>> &match_order_level){
+    unordered_set<unsigned_key> keys;
+    for(auto i : index){
+        keys.insert(i.first);
+    }
+    unordered_set<unsigned_key> used;
+    unordered_set<unsigned_key> new_keys;
+    for(int level = 0; level< match_order_level.size(); ++level){
+        while(keys.size()>1){
+            auto xx = *keys.begin();
+            unsigned_key yy;
+            keys.erase(xx);
+            for(auto i: keys){
+                if(xx & i){
+                    new_keys.insert(xx | i);
+                    match_order_level[level].emplace_back(xx,i);
+                    yy = i;
+                    break;
+                }
+            }
+            keys.erase(yy);
+        }
+        keys.insert(new_keys.begin(), new_keys.end());
+        new_keys.clear();
+    }
+
+}
+
 void part_join(unordered_map<unsigned_key, set<vector<int>>> &index,vector<pair<unsigned_key,unsigned_key>> &match_order){
     for(auto order: match_order){
         auto index_a = index[order.first];

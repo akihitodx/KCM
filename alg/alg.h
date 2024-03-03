@@ -25,6 +25,8 @@ void init_index_special(int query_graph_length, unordered_map<int,unordered_set<
 
 unsigned_key init_match_order(unordered_map<unsigned_key, set<vector<int>>> &index,vector<pair<unsigned_key,unsigned_key>> &match_order);
 
+void init_match_order_level(unordered_map<unsigned_key, set<vector<int>>> &index, vector<vector<pair<unsigned_key,unsigned_key>>> &match_order_level);
+
 void part_join(unordered_map<unsigned_key, set<vector<int>>> &index,vector<pair<unsigned_key,unsigned_key>> &match_order);
 
 void single_check(unordered_map<unsigned_key, set<vector<int>>> &index,set<pair<int,int>> &single,Graph &data);
